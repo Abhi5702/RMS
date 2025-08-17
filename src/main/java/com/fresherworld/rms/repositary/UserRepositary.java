@@ -24,5 +24,26 @@ public class UserRepositary {
          }
 		
 	}
+	
+	
+	public User findUserByUserId (String userId) {
+		
+		 String sql = " select user_id,first_name,last_name,user_name,email,phone_number,address,age from users  WHERE user_id = ?";
+		 try {
+             return jdbcTemplate.queryForObject(sql, new UserRowMapper(), userId);
+         } catch (EmptyResultDataAccessException e) {
+             return null; // User not found
+         }
+		
+	}
+	
+	public User finduserbyEmailid (String email) {
+		String sql = " select user_id,first_name,last_name,user_name,email,phone_number,address,age from users  WHERE email = ?";
+		 try {
+            return jdbcTemplate.queryForObject(sql, new UserRowMapper(), email);
+        } catch (EmptyResultDataAccessException e) {
+            return null; // User not found
+        }
+	}
 
 }
