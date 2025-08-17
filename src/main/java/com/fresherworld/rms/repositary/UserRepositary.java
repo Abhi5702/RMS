@@ -1,5 +1,7 @@
 package com.fresherworld.rms.repositary;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -44,6 +46,17 @@ public class UserRepositary {
         } catch (EmptyResultDataAccessException e) {
             return null; // User not found
         }
+	}
+	
+	public List<User> getAllUsers () {
+		
+		 String sql = " select user_id,first_name,last_name,user_name,email,phone_number,address,age from users ";
+		 try {
+            return jdbcTemplate.query(sql,new UserRowMapper());
+        } catch (EmptyResultDataAccessException e) {
+            return null; // User not found
+        }
+		
 	}
 
 }

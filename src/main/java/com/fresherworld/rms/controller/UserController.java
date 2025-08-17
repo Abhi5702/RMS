@@ -53,6 +53,14 @@ public class UserController {
 		return students;
 	}
 	
+	@GetMapping("/getAllUsers")
+	public List<User> getAllUsers() {
+		List<User> users = new ArrayList<>();
+		users = userRepositary.getAllUsers();
+		
+		return users;
+	}
+	
 	
 	@GetMapping("/find-by-user-id")
 	public User getuserbyuserId(@RequestParam("user_id") String userId) {
