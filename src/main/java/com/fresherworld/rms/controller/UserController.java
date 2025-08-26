@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -53,6 +55,14 @@ public class UserController {
 		return students;
 	}
 	
+	@GetMapping("/getAllUsers")
+	public List<User> getAllUsers() {
+		List<User> users = new ArrayList<>();
+		users = userRepositary.getAllUsers();
+		
+		return users;
+	}
+	
 	
 	@GetMapping("/find-by-user-id")
 	public User getuserbyuserId(@RequestParam("user_id") String userId) {
@@ -63,6 +73,40 @@ public class UserController {
 	public User getuserbyemailid(@RequestParam String email) {
 		return userRepositary.finduserbyEmailid(email);
 	}
+	 @PostMapping("/createStudent")
+	    public String createUser(@RequestBody Student student) {
+		 
+	        // Here you would normally save user into DB (using JPA/Repository)
+		 
+			/*
+			 * System.out.println("student name "+student.getName());
+			 * System.out.println("student Roll "+student.getRollNo());
+			 */
+		 int result = userRepositary.createStudent(student);
+		 if(result==1) {
+			 return "Student created: " + student.getName() + " (" + student.getName() + ")";
+		 }else {
+			 return "Error while creating student";
+		 }
+	        
+	    }
+	//post mapping /createUser   
+	//payload for request body User 
+	 
+	 
+	 
+	 
+	 @PostMapping("/createuser")
+	 public User createNewuser(@RequestBody User user) {
+	 	return userRepositary.createUser(user);
+	 }
+	 
+	 @GetMapping("/findbylastname")
+	 public User getuserbylastname(@RequestParam String lastname) {
+	 	return userRepositary.findbylastname(lastname);
+	 }
+	 
+	 
 	
 
 }
