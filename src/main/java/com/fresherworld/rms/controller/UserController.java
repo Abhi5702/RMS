@@ -4,13 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fresherworld.rms.model.Student;
+import com.fresherworld.rms.model.UpdateUserRequest;
 import com.fresherworld.rms.model.User;
 import com.fresherworld.rms.repositary.UserRepositary;
 
@@ -101,10 +105,33 @@ public class UserController {
 	 	return userRepositary.createUser(user);
 	 }
 	 
+	 @PutMapping("/updateuser")
+	 public String updateuser(@RequestBody UpdateUserRequest user) {
+		 String message = "";
+		 int result = userRepositary.updateUser(user);
+		 if(result>0) {
+			 message = "Users"+user.getUserName()+" Details updated";
+		 }else {
+			 message= "No User Found with "+user.getUserName();
+		 }
+		 
+	 	return message;
+	 }
+	 
 	 @GetMapping("/findbylastname")
 	 public User getuserbylastname(@RequestParam String lastname) {
 	 	return userRepositary.findbylastname(lastname);
 	 }
+	 
+	 @DeleteMapping("/deleteuser")
+	 public String deleteUser(@RequestParam String username) {
+	     int result = userRepositary.deleteUserByUsername(username);
+	     return result > 0 
+	            ? "User with username '" + username + "' deleted successfully." 
+	            : "No user found with username '" + username + "'";
+	 }
+
+
 	 
 	 
 	

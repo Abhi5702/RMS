@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import com.fresherworld.rms.mapper.UserRowMapper;
 import com.fresherworld.rms.model.Student;
+import com.fresherworld.rms.model.UpdateUserRequest;
 import com.fresherworld.rms.model.User;
 
 @Repository
@@ -59,15 +60,7 @@ public class UserRepositary {
         }
 		
 	}
-	public int createStudent(Student s) {
-		String sql = "insert into student values (?,?)";
-		return jdbcTemplate.update(
-			    "insert into student(roll_no,name) values (?,?)",
-			    s.getRollNo(), s.getName()
-			);
-		
-		
-	}
+	
 	
 	public User createUser(User user) {
 		System.out.println("user to be ceated "+user);
@@ -88,6 +81,30 @@ public class UserRepositary {
 		return user;
 	}
 	
+	public int updateUser(UpdateUserRequest userReq) {
+		
+		String username = userReq.getUserName();
+		String sql = "SELECT COUNT(*) FROM users WHERE user_name = ?";
+        Integer count = jdbcTemplate.queryForObject(sql, Integer.class, username);
+	    if(count>0) {
+	    	String updateQry  = "update users set first_name = ?,last_name =?,email = ?,phone_number=?,address=? where user_name = ?";
+	    	return jdbcTemplate.update(updateQry, userReq.getFirstName(), userReq.getLastName(),userReq.getEmail(),userReq.getPhoneNo(),userReq.getAddress(),userReq.getUserName());
+	    }else {
+	    	return 0;
+	    }
+		
+		
+		
+	}
+	public int createStudent(Student s) {
+		String sql = "insert into student values (?,?)";
+		return jdbcTemplate.update(
+			    "insert into student(roll_no,name) values (?,?)",
+			    s.getRollNo(), s.getName()
+			);
+		
+		
+	}
 	public User createUser() {
 		System.out.println("create user is getting called");
 		return null;
@@ -104,6 +121,13 @@ public class UserRepositary {
 		
 		
 	}
+	
+	public int deleteUserByUsername(String username) {
+	    String sql = "DELETE FROM users WHERE user_name = ?";
+	    return jdbcTemplate.update(sql, username); 
+	    // returns number of rows deleted (0 if none found)
+	}
+
 	
 	
 
